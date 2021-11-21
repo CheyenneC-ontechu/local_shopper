@@ -31,3 +31,11 @@ List<StoreCategory> categories = [
   StoreCategory("Home Goods", 10, imageURL_homegoods),
   StoreCategory("Jewellery", 22, imageURL_accessories),
 ];
+
+//search results list
+List<Storefront> storeResults = [
+  Storefront("Sandra's Cosmetics", "Home Goods", 0.25, 4, imageURL_makeup),
+  Storefront("Sweet Home", "Home Goods", 1.5, 4, imageURL_utensils),
+  Storefront("Dress Up Show Up", "Home Goods", 0.9, 4, imageURL_clothes),
+  Storefront("Make Your World", "Home Goods", 1, 4, imageURL_nailpolish),
+];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_shopper/screens/storepage.dart';
 
 class StoreInfo extends StatelessWidget {
   final String? imageURL, category, name;
@@ -15,7 +16,7 @@ class StoreInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(child: Container(
       //store preview image
       decoration: BoxDecoration(
         border: Border.all(),
@@ -82,7 +83,14 @@ class StoreInfo extends StatelessWidget {
             ),
           ),
         ]
-    ));
+    )),
+    onTap: (){Navigator.push(context, MaterialPageRoute(
+        builder: (context) => StorePage(name: name,
+    category: category,
+    distance: distance,
+    imageURL: imageURL,
+    rating: rating,)));},
+    );
   }
 }
 
