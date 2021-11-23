@@ -39,8 +39,8 @@ class _StoreInfoCardState extends State<StoreInfoCard> with SingleTickerProvider
           alignment: Alignment.topCenter,
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * .07,
-              right: 20.0,
-              left: 20.0),
+              right: 10.0,
+              left: 10.0),
           child: Container(
             height: 225.0,
             width: MediaQuery.of(context).size.width,
@@ -50,11 +50,11 @@ class _StoreInfoCardState extends State<StoreInfoCard> with SingleTickerProvider
               
               child: TabBarView(controller: _tabController,
             children: [
-              //delivery
+              //info
               Container( height: 200,
                   child: Column(children: [
                     ListTile(
-                    title: const Text('Delivery',style: TextStyle(fontWeight: FontWeight.bold),),
+                    title: const Text('Information',style: TextStyle(fontWeight: FontWeight.bold),),
                     trailing: IconButton(icon: const Icon(Icons.east,color: Colors.black,), 
                     onPressed: () {_tabController.animateTo(1);}),
                   ),
@@ -62,38 +62,43 @@ class _StoreInfoCardState extends State<StoreInfoCard> with SingleTickerProvider
                   Text(widget.category!.toUpperCase()),
                   Container(child:Column(children:[Row(children: List.generate(widget.rating!, (index) => const Icon(Icons.star, color: Colors.amber))),
                   Row(children: [Icon(Icons.location_pin), Text(widget.distance.toString()+"km")]),
-                  Row(children: [Icon(Icons.date_range), Text("Monday-Friday")]),
-                  Row(children: [Icon(Icons.schedule), Text("10am-5pm")])],
+                  Row(children: const [Icon(Icons.date_range), Text("Monday-Friday")]),
+                  Row(children: const [Icon(Icons.schedule), Text("10am-5pm")])],
                   mainAxisAlignment: MainAxisAlignment.spaceAround,),
                   padding: EdgeInsets.only(top: 10, left: 20))
                   ],),
                 ),
 
-                //info
+                //about
                 Container(height: 200,
                   child: Column(children: [
                     ListTile(
                     leading: IconButton(icon: const Icon(Icons.west,color: Colors.black), 
                     onPressed: () {_tabController.animateTo(0);}),
-                    title: Text('Info'),
+                    title: const Text('About',style: TextStyle(fontWeight: FontWeight.bold)),
                     trailing: IconButton(icon: const Icon(Icons.east,color: Colors.black), 
                     onPressed: () {_tabController.animateTo(2);}),
                   ),
-                  ListTile(
-                    leading: IconButton(onPressed: (){}, icon: Icon(Icons.phone,color: Colors.black,)),
-                    title: Text("(905) 721-8668")
-                  ),
-                  Text(getInfo())
+                  Container(child: Row(children: const [Icon(Icons.phone,color: Colors.black,),
+                  Text("(905) 721-8668",style: TextStyle(fontSize: 15))],),
+                  padding: const EdgeInsets.only(left:10),),
+
+                  Container(child: Row(children: const [Icon(Icons.archive), 
+                  Text("Curbside Pick-up Available",style: TextStyle(fontSize: 15))],),
+                  padding: const EdgeInsets.only(left:10)),
+                  
+                  Container(child: Text(getInfo(),style: TextStyle(fontSize: 16),), 
+                  padding: const EdgeInsets.fromLTRB(10,20,10,0),)
                   ],),
                 ),
 
                 //review
-                Container( height: 200,
+                SizedBox( height: 200,
                   child: Column(children: [
                     ListTile(
                     leading: IconButton(icon: const Icon(Icons.west,color: Colors.black), 
                     onPressed: () {_tabController.animateTo(1);}),
-                    title: Container(child:Text('Review'),padding: EdgeInsets.all(4),),
+                    title: Container(child:const Text('Reviews',style: TextStyle(fontWeight: FontWeight.bold)),padding: EdgeInsets.all(4),),
                   ),
                   SizedBox(child: ListView.separated(
                     itemBuilder: (context,index){
@@ -101,14 +106,14 @@ class _StoreInfoCardState extends State<StoreInfoCard> with SingleTickerProvider
                         Container(child: Column(children:[
                           Text(reviews[index].name!),
                           Row(children: [
-                            Icon(Icons.star,color:Colors.amber),
+                            const Icon(Icons.star,color:Colors.amber),
                             Text(reviews[index].rating.toString()+"/5")
                           ],mainAxisAlignment: MainAxisAlignment.center,)
                         ]),
-                        width: 80,padding: EdgeInsets.only(right: 5),),
+                        width: 80,padding: const EdgeInsets.only(right: 5),),
                         Flexible(child: Text(reviews[index].preview!))]);
                     }, 
-                    separatorBuilder: (context, index) => Divider(color: Colors.black54,), 
+                    separatorBuilder: (context, index) => const Divider(color: Colors.black54,), 
                     itemCount: reviews.length),
                     height: 150)
                   ],),
@@ -121,9 +126,10 @@ class _StoreInfoCardState extends State<StoreInfoCard> with SingleTickerProvider
   }
 
   String getInfo(){
-    return "Welcome to you home Sweet Home! "
+    return "Welcome to your home Sweet Home! "
     "Here we sell soaps, candles, towels, and even toothpaste. "
-    "";
+    "We believe a sweet smell makes a sweet home,"
+    "so let's help your home be as sweet as you <3.  ";
   }
 
 }

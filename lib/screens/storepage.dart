@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/searchbar.dart';
-import '../constants.dart';
 import '../widgets/inventory.dart';
 import '../widgets/storeinfocard.dart';
 
@@ -9,13 +8,15 @@ class StorePage extends StatefulWidget{
   final String? imageURL, category, name;
   final double? distance;
   final int? rating;
+  List<InventoryItem> inventory;
 
-  const StorePage({Key? key,
+  StorePage({Key? key,
     this.name,
     this.category,
     this.distance,
     this.imageURL,
     this.rating,
+    required this.inventory
   }) : super(key: key);
 
   @override
@@ -46,7 +47,7 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
             shrinkWrap: true,
             physics: const AlwaysScrollableScrollPhysics(),
             
-            children: [Container(child: Image.network(widget.imageURL!,fit: BoxFit.fill,),
+            children: [SizedBox(child: Image.network(widget.imageURL!,fit: BoxFit.fill,),
           height: size.height*.35, width: size.width),
           Container(child: DropdownButton(items:<String>['All','Deals', 'Candles', 'Toiletries','Teeth']
                 .map<DropdownMenuItem<String>>((String value) {
@@ -58,7 +59,7 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
             onChanged: (String? newValue) {
               setState(() {
                 inventoryTab = newValue!;
-                inventory = InventoryItem.organizeInventory(inventory);
+                widget.inventory = InventoryItem.organizeInventory(widget.inventory);
               });
             },
             value: inventoryTab,
@@ -74,10 +75,10 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
                 shrinkWrap: true,
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const SizedBox(width: 16),
-                itemCount: inventory.length,
+                itemCount: widget.inventory.length,
 
                 itemBuilder: (context, index) {
-                  final item = inventory[index];
+                  final item = widget.inventory[index];
 
                   return InventoryItem(
                     item.name,

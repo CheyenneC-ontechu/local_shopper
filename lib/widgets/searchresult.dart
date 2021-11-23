@@ -29,7 +29,7 @@ class _SearchResultsState extends State<SearchResults> {
       body: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(
-            child: HeaderWidget(text: "Results for: soap")),
+            child: HeaderWidget(text: "Results for: jacket")),
 
             SliverToBoxAdapter(child: 
             Container(padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
@@ -71,6 +71,7 @@ class _SearchResultsState extends State<SearchResults> {
                     distance: storefront.distance,
                     rating: storefront.rating,
                     imageURL: storefront.url,
+                    price: storefront.price,
                   );
                 },
 

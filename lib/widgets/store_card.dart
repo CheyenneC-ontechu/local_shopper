@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_shopper/constants.dart';
 import 'package:local_shopper/screens/storepage.dart';
 
 class StoreInfo extends StatelessWidget {
@@ -89,7 +90,8 @@ class StoreInfo extends StatelessWidget {
     category: category,
     distance: distance,
     imageURL: imageURL,
-    rating: rating,)));},
+    rating: rating,
+    inventory: inventoryHomeSweet,)));},
     );
   }
 }
@@ -97,7 +99,7 @@ class StoreInfo extends StatelessWidget {
 class Storefront {
   final String? url, category, name;
   final double? distance;
-  final int? rating;
+  final int? rating, price;
 
-  Storefront(this.name, this.category, this.distance, this.rating, this.url);
+  Storefront(this.name, this.category, this.distance, this.rating, this.url,this.price);
 }
