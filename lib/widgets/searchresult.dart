@@ -44,6 +44,7 @@ class _SearchResultsState extends State<SearchResults> {
             onChanged: (String? newValue) {
               setState(() {
                 sortBy = newValue!;
+                storeResults = StoreResult.sortResults(storeResults, sortBy);
               });
             },
             value: sortBy,

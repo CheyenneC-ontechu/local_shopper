@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/searchbar.dart';
+import '../constants.dart';
+import '../widgets/inventory.dart';
+import '../widgets/storeinfocard.dart';
 
 class StorePage extends StatefulWidget{
   final String? imageURL, category, name;
@@ -19,114 +22,126 @@ class StorePage extends StatefulWidget{
   State<StorePage> createState() => _StorePageState();
 }
 
-
-
 class _StorePageState extends State<StorePage> with SingleTickerProviderStateMixin{
 
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(vsync: this, length: 3);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  Icon _icon = const Icon(Icons.favorite_border,color: Colors.red,);
+  bool favorite = false;
+  String snackBarMessage = "Store added to favourites!";
+  String inventoryTab = "Deals";
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
 
     return Scaffold(
       appBar: AppBar(actions: [
         IconButton(onPressed: (){search(context);}, icon: Icon(Icons.search)),
-        Icon(Icons.account_circle)
+        const Icon(Icons.account_circle)
       ],
       backgroundColor: Colors.deepOrange),
       body: Stack(
         children: [
-          Column(children: [Container(child: Image.network(widget.imageURL!,fit: BoxFit.fill,),
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+            
+            children: [Container(child: Image.network(widget.imageURL!,fit: BoxFit.fill,),
           height: size.height*.35, width: size.width),
+          Container(child: DropdownButton(items:<String>['All','Deals', 'Candles', 'Toiletries','Teeth']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                inventoryTab = newValue!;
+                inventory = InventoryItem.organizeInventory(inventory);
+              });
+            },
+            value: inventoryTab,
+            icon: const Icon(Icons.expand_more),
+            ),
+            padding: const EdgeInsets.only(top:35,left: 20),),
+
+            SizedBox(
+              //can't figure out how to make scroll view work here
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => const SizedBox(width: 16),
+                itemCount: inventory.length,
+
+                itemBuilder: (context, index) {
+                  final item = inventory[index];
+
+                  return InventoryItem(
+                    item.name,
+                    item.imageURL,
+                    item.price
+                  );
+                },
+
+              ),
+            )
+
           ]),
 
 
-          Container(
-          alignment: Alignment.topCenter,
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * .2,
-              right: 20.0,
-              left: 20.0),
-          child: Container(
-            height: 225.0,
-            width: MediaQuery.of(context).size.width,
-            child: Card(
-              color: Colors.white,
-              elevation: 4.0,
-              
-
-              child: TabBarView(controller: _tabController,
-          children: [
-          Container( height: 200,
-                  child: Column(children: [
-                    ListTile(
-                    title: const Text('Delivery',style: TextStyle(fontWeight: FontWeight.bold),),
-                    trailing: IconButton(icon: const Icon(Icons.east), 
-                    onPressed: () {_tabController.animateTo(1);}),
-                  ),
-                  Text(widget.name!, style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-                  Text(widget.category!.toUpperCase()),
-                  Container(child:Column(children:[Row(children: List.generate(widget.rating!, (index) => const Icon(Icons.star, color: Colors.amber))),
-                  Row(children: [Icon(Icons.location_pin), Text(widget.distance.toString()+"km")]),
-                  Row(children: [Icon(Icons.date_range), Text("Monday-Friday")]),
-                  Row(children: [Icon(Icons.schedule), Text("10am-5pm")])],
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,),
-                  padding: EdgeInsets.only(top: 10, left: 20))
-                  ],),
-                ),
-                Container(height: 200,
-                  child: Column(children: [
-                    ListTile(
-                    leading: IconButton(icon: const Icon(Icons.west), 
-                    onPressed: () {_tabController.animateTo(0);}),
-                    title: Text('Info'),
-                    trailing: IconButton(icon: const Icon(Icons.east), 
-                    onPressed: () {_tabController.animateTo(2);}),
-                  ),
-                  Text("Placeholder for paragraph about store")
-                  ],),
-                ),
-                Container( height: 200,
-                  child: Column(children: [
-                    ListTile(
-                    leading: IconButton(icon: const Icon(Icons.west), 
-                    onPressed: () {_tabController.animateTo(1);}),
-                    title: Text('Review'),
-                  ),
-                  Text("Placeholder for reviews")
-                  ],),
-                )
-        ])
-
-            ),
-          ),
-        ),
+          StoreInfoCard(name: widget.name,category: widget.category,
+          distance: widget.distance,rating: widget.rating),
         
           
         ],
-      )
-      
+      ),
+      //fave button
+      floatingActionButton: Padding(child: FloatingActionButton(
+        onPressed: (){
+          final snackBar = SnackBar(
+            content: Text(snackBarMessage,style: TextStyle(fontSize: 18),textAlign: TextAlign.center,),
+            action: SnackBarAction(label: "undo", onPressed: (){
+              setSnackbackState();
+            }),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setSnackbackState();
+        },
+        child: _icon,
+        backgroundColor: Colors.white,
+        splashColor: Colors.red,),
+        padding: const EdgeInsets.only(bottom:500, right:150),),
     );
+  }
+
+  void setSnackbackState() {
+    setState(() {
+      if (favorite){
+        _icon = const Icon(Icons.favorite_border,color: Colors.red,);
+        favorite = false;
+        snackBarMessage = "Store added to favourites!"; 
+      } else {
+        _icon = const Icon(Icons.favorite,color: Colors.red,);
+        favorite = true;
+        snackBarMessage = "Store removed to favourites.";
+      }
+    });
   }
 
   void search(BuildContext context){
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return SearchBar();
+      return const SearchBar();
     }));
   }
+
   
+}
+
+class Review {
+  final String? name, preview;
+  final int? rating;
+  Review(this.name,this.preview,this.rating);
 }

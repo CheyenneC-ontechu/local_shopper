@@ -1,19 +1,11 @@
-
 import 'package:flutter/material.dart';
-import 'package:local_shopper/widgets/store_card.dart';
+import '../constants.dart';
 
-class StoreResult extends StatelessWidget {
-  final String? imageURL, category, name;
-  final double? distance;
-  final int? rating;
+class InventoryItem extends StatelessWidget{
+  final String? name,imageURL;
+  final double? price;
 
-  const StoreResult({Key? key,
-    this.name,
-    this.category,
-    this.distance,
-    this.imageURL,
-    this.rating,
-  }) : super(key: key);
+  InventoryItem(this.name,this.imageURL,this.price, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +23,17 @@ class StoreResult extends StatelessWidget {
           children: [
             Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
             children: [Text(name!,style: const TextStyle(fontWeight:FontWeight.bold,fontSize: 20)),
-            Text(category!.toUpperCase()),]),
+            ]),
             
             
             Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(children: List.generate(rating!, (index) => const Icon(Icons.star, color: Colors.amber))),
                 Container(child: Row(children: [
-                  const Icon(Icons.location_pin), Text(distance.toString()+"km")
-                ],),decoration: BoxDecoration(border: Border.all()), 
+                  Text("\$"+price.toString(),style: TextStyle(fontSize: 20),),
+                  Container(child: ElevatedButton(onPressed: (){}, child: Icon(Icons.add),
+                  style: ElevatedButton.styleFrom(primary: Colors.green),),
+                  padding: EdgeInsets.only(left: 50),)
+                ],mainAxisAlignment: MainAxisAlignment.spaceBetween,), 
                 padding: const EdgeInsets.all(3),)
               ],
             )
@@ -50,19 +44,13 @@ class StoreResult extends StatelessWidget {
     );
   }
 
-  static List<Storefront> sortResults (List<Storefront> list,String sortMethod){
-    if (sortMethod == "Best Match"){
-      return list;
-    } else if (sortMethod == "Price"){
-      list.shuffle();
-      return list;
-    } else if (sortMethod == "Distance"){
-      //TODO: sort from smallest to greatest distance
-      return list;
-    }
-    else {
-      return list;
-    }
+  static List<InventoryItem> organizeInventory(List<InventoryItem> list){
+    //this is just rearranging the 2nd and 3rd items
+    //convenient for how I ordered the list of items
+    //probably fine for a prototype that will be shown from video
+    List<InventoryItem> newList = [list[0], list[2], list[1]];
+    return newList;
   }
-  
+
+
 }
