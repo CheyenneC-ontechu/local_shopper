@@ -18,16 +18,18 @@ class _SearchBarState extends State<SearchBar> {
       appBar: AppBar(title: Container(child:
       Center(child: TextField(
         decoration: InputDecoration(
-          prefixIcon: IconButton(icon: Icon(Icons.search,color: Colors.black,),
+          hintText: "What are you looking for?",
+          prefixIcon: IconButton(icon: const Icon(Icons.search,color: Colors.black,),
           onPressed: () {
-            //TODO: put a search result for something
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResults()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchResults()));
           },),
-          suffixIcon: Icon(Icons.clear, color: Colors.black),
+          suffixIcon: const Icon(Icons.clear, color: Colors.black),
         ),
       )),
       decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10))),
       backgroundColor: Colors.deepOrange,),
+
+      body: const Center(child: Icon(Icons.search,size: 200, color: Colors.grey))
     );
   }
   
