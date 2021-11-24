@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/searchbar.dart';
 import '../widgets/inventory.dart';
 import '../widgets/storeinfocard.dart';
+import 'homepage.dart';
 
 class StorePage extends StatefulWidget{
   final String? imageURL, category, name;
@@ -36,6 +37,7 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
 
     return Scaffold(
       appBar: AppBar(actions: [
+        IconButton(onPressed: (){home(context);},icon: Icon(Icons.home)),
         IconButton(onPressed: (){search(context);}, icon: Icon(Icons.search)),
         const Icon(Icons.account_circle)
       ],
@@ -130,6 +132,12 @@ class _StorePageState extends State<StorePage> with SingleTickerProviderStateMix
         snackBarMessage = "Store removed to favourites.";
       }
     });
+  }
+
+  void home(BuildContext context){
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return const HomePage();
+    }));
   }
 
   void search(BuildContext context){

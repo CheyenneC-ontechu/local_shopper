@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_shopper/screens/registrationpage.dart';
 import 'screens/homepage.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Project 3B",
       theme: ThemeData(primarySwatch: Colors.deepOrange),
-      home: const HomePage(),
+      home: const RegistrationPage(),
     );
   }
 }

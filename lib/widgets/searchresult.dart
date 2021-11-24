@@ -20,6 +20,7 @@ class _SearchResultsState extends State<SearchResults> {
     
     return Scaffold(
       appBar: AppBar(actions: [
+        IconButton(onPressed: (){home(context);},icon: Icon(Icons.home)),
         IconButton(onPressed: (){search(context);}, icon: const Icon(Icons.search)),
         const Icon(Icons.account_circle)
       ],
@@ -81,6 +82,12 @@ class _SearchResultsState extends State<SearchResults> {
         ],
       )
     );
+  }
+
+  void home(BuildContext context){
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return const HomePage();
+    }));
   }
 
   void search(BuildContext context){

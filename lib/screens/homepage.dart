@@ -14,6 +14,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Local Shopper"),
         actions: [
+          IconButton(icon: const Icon(Icons.home),
+            onPressed: (){}//already at home page
+          ),
+
           IconButton(icon: const Icon(Icons.search),
             onPressed: () => search(context),
           ),
@@ -22,6 +26,7 @@ class HomePage extends StatelessWidget {
             onPressed: () => print("Account settings not yet implemented"),
           ),
         ],
+        automaticallyImplyLeading: false,
       ),
 
       body: CustomScrollView(
